@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Transaksi Barang</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h2, h3 {
+            color: #333;
+        }
+        #total_harga {
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>Aplikasi Transaksi Barang</h2>
+    <h3>Input KodeBarang :</h3>
+    <input type="text" id="kode_barang" name="kode_barang">
+    <h3>Input Banyaka Barang :</h3>
+    <input type="text" id="banyak_barang" name="banyak_barang">
+    <button id="submit_button">Submit</button>
+    <h3>Total Harga :</h3>
+    <p id="total_harga"></p>
+
+    <script>
+        var kodeBarang = document.getElementById('kode_barang');
+        var banyakBarang = document.getElementById('banyak_barang');
+        var submitButton = document.getElementById('submit_button');
+        var totalHarga = document.getElementById('total_harga');
+
+        var hargaBarang = {
+            '001': 10000,
+            '002': 20000,
+            '003': 30000
+        };
+
+        submitButton.addEventListener('click', function() {
+            var kode = kodeBarang.value;
+            var banyak = parseInt(banyakBarang.value);
+
+            if (kode in hargaBarang && !isNaN(banyak)) {
+                var total = hargaBarang[kode] * banyak;
+                totalHarga.textContent = 'Rp ' + total.toLocaleString('id-ID');
+            } else {
+                totalHarga.textContent = 'Input tidak valid.';
+            }
+        });
+
+        // Tambahkan fitur pengingat uang tunai
+        function checkUang() {
+            var total = parseInt(totalHarga.textContent.replace('Rp ', '').replace(',', ''));
+            var uangUser = parseInt(window.prompt('Masukkan uang user :'));
+
+            if (isNaN(uangUser)) {
+                alert('Input tidak valid.');
+            } else if (uangUser < total) {
+                alert('Uang yang anda masukkan tidak mencukupi. Total yang harus dibayar adalah Rp ' + total.toLocaleString('id-ID') + '.');
+            } else {
+                var kembalian = uangUser - total;
+                alert('Uang yang anda masukkan cukup. Kembalian anda adalah Rp ' + kembalian.toLocaleString('id-ID') + '.');
+            }
+        }
+
+        // Panggil fungsi checkUang saat tombol oke diklik
+        var tombolOke = document.createElement('button');
+        tombolOke.textContent = 'Oke';
+        tombolOke.addEventListener('click', checkUang);document.body.appendChild(tombolOke);
+    </script>
+</body>
+</html>
